@@ -35,7 +35,14 @@ public class MovieDAO_File implements IMovieDataAccess {
 
     @Override
     public Movie createMovie(String title, int year) throws Exception {
-        return null;
+        Movie movie = new Movie(getAvailableId(), year, title);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MOVIES_FILE, true))) {
+            bw.newLine();
+            bw.write(toCsv(movie));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return movie;
     }
 
     @Override
@@ -44,5 +51,13 @@ public class MovieDAO_File implements IMovieDataAccess {
 
     @Override
     public void deleteMovie(Movie movie) throws Exception {
+    }
+
+    private int getAvailableId() throws IOException {
+        return getAllMovies().size();
+    }
+
+    private String toCsv(Movie movie){
+        return movie.getId()+","+movie.getYear()+","+movie.getTitle();
     }
 }

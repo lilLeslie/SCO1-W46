@@ -21,8 +21,6 @@ public class MovieModel {
         moviesToBeViewed.addAll(movieManager.getAllMovies());
     }
 
-
-
     public ObservableList<Movie> getObservableMovies() {
         return moviesToBeViewed;
     }
@@ -31,5 +29,9 @@ public class MovieModel {
         List<Movie> searchResults = movieManager.searchMovies(query);
         moviesToBeViewed.clear();
         moviesToBeViewed.addAll(searchResults);
+    }
+
+    public boolean createMovie(String title, int year) throws Exception {
+        return movieManager.createMovie(title, year) != null;
     }
 }
