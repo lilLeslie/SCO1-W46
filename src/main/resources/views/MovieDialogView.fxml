@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="16.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mrs.GUI.Controller.AddMovieController">
+<VBox spacing="16.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mrs.GUI.Controller.MovieDialogController">
    <children>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0" prefWidth="279.0" spacing="16.0">
          <children>
@@ -25,9 +25,9 @@
             </VBox>
          </children>
       </VBox>
-      <HBox alignment="CENTER" prefHeight="0.0" prefWidth="279.0">
+      <HBox alignment="CENTER" prefHeight="0.0" prefWidth="279.0" spacing="8.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#onAddMovieClicked" text="Add Movie" />
+            <Button fx:id="btnAction" mnemonicParsing="false" />
          </children>
       </HBox>
    </children>

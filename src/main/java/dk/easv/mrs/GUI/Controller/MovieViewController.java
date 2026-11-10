@@ -4,7 +4,6 @@ package dk.easv.mrs.GUI.Controller;
 
 import dk.easv.mrs.GUI.View.MovieListCell;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -15,7 +14,6 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 // Project imports
@@ -30,6 +28,7 @@ public class MovieViewController implements Initializable {
     public TextField txtMovieSearch;
     public ListView<Movie> lstMovies;
     private MovieModel movieModel;
+    private Movie selected;
 
     public MovieViewController() {
 
@@ -54,6 +53,14 @@ public class MovieViewController implements Initializable {
                 e.printStackTrace();
             }
         });
+        lstMovies.setOnMouseClicked(event -> {
+            try {
+                selected = lstMovies.getSelectionModel().getSelectedItem();
+            } catch (Exception e){
+                displayError(e);
+                e.printStackTrace();
+            }
+        });
 
     }
 
@@ -66,10 +73,11 @@ public class MovieViewController implements Initializable {
 
     public void onAddMovieClicked(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddMovieView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MovieDialogView.fxml"));
             Parent root = loader.load();
-            AddMovieController controller = loader.getController();
+            MovieDialogController controller = loader.getController();
             controller.setMovieModel(movieModel);
+            controller.setMovie(selected);
             Stage stage = new Stage();
             stage.setTitle("Add Movie");
             stage.setScene(new Scene(root));

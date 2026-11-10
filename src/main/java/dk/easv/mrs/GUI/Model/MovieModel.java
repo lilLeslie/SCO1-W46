@@ -40,6 +40,12 @@ public class MovieModel {
         return false;
     }
 
+    public void updateMovie(Movie movie) throws Exception{
+        movieManager.updateMovie(movie);
+        int index = moviesToBeViewed.indexOf(movie);
+        moviesToBeViewed.set(index, movie);
+    }
+
     public void deleteMovie(Movie movie) throws Exception {
         movieManager.deleteMovie(movie);
         moviesToBeViewed.remove(movie);
