@@ -32,6 +32,16 @@ public class MovieModel {
     }
 
     public boolean createMovie(String title, int year) throws Exception {
-        return movieManager.createMovie(title, year) != null;
+        Movie movie = movieManager.createMovie(title, year);
+        if (movie != null){
+        moviesToBeViewed.add(movie);
+            return true;
+        }
+        return false;
+    }
+
+    public void deleteMovie(Movie movie) throws Exception {
+        movieManager.deleteMovie(movie);
+        moviesToBeViewed.remove(movie);
     }
 }

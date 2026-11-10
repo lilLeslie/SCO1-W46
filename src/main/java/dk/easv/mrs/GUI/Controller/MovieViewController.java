@@ -1,6 +1,8 @@
 package dk.easv.mrs.GUI.Controller;
 
 // Java imports
+
+import dk.easv.mrs.GUI.View.MovieListCell;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +31,7 @@ public class MovieViewController implements Initializable {
     public ListView<Movie> lstMovies;
     private MovieModel movieModel;
 
-    public MovieViewController()  {
+    public MovieViewController() {
 
         try {
             movieModel = new MovieModel();
@@ -41,10 +43,9 @@ public class MovieViewController implements Initializable {
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         lstMovies.setItems(movieModel.getObservableMovies());
-
+        lstMovies.setCellFactory(lv -> new MovieListCell());
         txtMovieSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
             try {
                 movieModel.searchMovie(newValue);
@@ -56,8 +57,7 @@ public class MovieViewController implements Initializable {
 
     }
 
-    private void displayError(Throwable t)
-    {
+    private void displayError(Throwable t) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Something went wrong");
         alert.setHeaderText(t.getMessage());
@@ -75,8 +75,14 @@ public class MovieViewController implements Initializable {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void onDeleteClicked(ActionEvent actionEvent) throws Exception {
+        if (lstMovies.getSelectionModel().getSelectedItem() != null){
+            movieModel.deleteMovie(lstMovies.getSelectionModel().getSelectedItem());
         }
     }
 }

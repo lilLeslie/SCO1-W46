@@ -19,7 +19,10 @@
          </VBox.margin>
       </HBox>
       <ListView fx:id="lstMovies" prefHeight="278.0" prefWidth="567.0" />
-      <HBox alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="535.0" />
+      <HBox alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="535.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#onDeleteClicked" text="Delete" />
+         </children></HBox>
    </children>
    <padding>
       <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />

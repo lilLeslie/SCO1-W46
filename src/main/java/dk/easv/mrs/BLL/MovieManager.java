@@ -30,4 +30,8 @@ public class MovieManager {
     public Movie createMovie(String title, int year) throws Exception {
         return movieDAO.createMovie(title, year);
     }
+
+    public void deleteMovie(Movie movie) throws Exception {
+        movieDAO.deleteMovie(movie);
+    }
 }
