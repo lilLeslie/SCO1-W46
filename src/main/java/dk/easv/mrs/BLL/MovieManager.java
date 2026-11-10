@@ -7,7 +7,7 @@ import java.util.List;
 import dk.easv.mrs.BE.Movie;
 import dk.easv.mrs.BLL.util.MovieSearcher;
 import dk.easv.mrs.DAL.IMovieDataAccess;
-import dk.easv.mrs.DAL.MovieDAO_Mock;
+import dk.easv.mrs.DAL.MovieDAO_File;
 
 public class MovieManager {
 
@@ -15,7 +15,7 @@ public class MovieManager {
     private IMovieDataAccess movieDAO;
 
     public MovieManager() {
-        movieDAO = new MovieDAO_Mock();
+        movieDAO = new MovieDAO_File();
     }
 
     public List<Movie> getAllMovies() throws Exception {
@@ -24,7 +24,6 @@ public class MovieManager {
 
     public List<Movie> searchMovies(String query) throws Exception {
         List<Movie> allMovies = getAllMovies();
-        List<Movie> searchResult = movieSearcher.search(allMovies, query);
-        return searchResult;
+        return movieSearcher.search(allMovies, query);
     }
 }
