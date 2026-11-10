@@ -1,7 +1,11 @@
 package dk.easv.mrs.DAL;
-import dk.easv.mrs.BE.Movie;
+
+// Java imports
 import java.io.*;
 import java.util.List;
+
+// Project imports
+import dk.easv.mrs.BE.Movie;
 
 public class MovieDAO_File implements IMovieDataAccess {
 
