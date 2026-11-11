@@ -8,31 +8,49 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 // Project imports
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.mrs.BE.Movie;
 
 public class MovieDAO_File implements IMovieDataAccess {
+    private DbConnection dbConnection = new DbConnection();
 
     private static final String MOVIES_FILE = "data/movie_titles.txt";
+
+    public MovieDAO_File() throws IOException {
+    }
 
     //The @Override annotation is not required, but is recommended for readability
     // and to force the compiler to check and generate error msg. if needed etc.
     //@Override
-    public List<Movie> getAllMovies() throws IOException {
+    public List<Movie> getAllMovies() throws Exception {
         List<Movie> movies = new ArrayList<>();
-        try {
-            List<String> data = Files.readAllLines(Path.of(MOVIES_FILE));
-            for (String line : data) {
-                String[] parts = line.split(",");
-                movies.add(new Movie(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), parts[2]));
+
+        try (Connection connection = dbConnection.getConnection();
+             Statement stmt = connection.createStatement()) {
+
+            String sql = "SELECT * FROM dbo.Movie";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()){
+                int id = rs.getInt(1);
+                String title = rs.getString(2);
+                int year = rs.getInt(3);
+                movies.add(new Movie(id, year, title));
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            return movies;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new Exception("Could not get movies: ", e);
         }
-        return movies;
     }
 
     @Override
@@ -95,7 +113,7 @@ public class MovieDAO_File implements IMovieDataAccess {
         }
     }
 
-    private int getAvailableId() throws IOException {
+    private int getAvailableId() throws Exception {
         return getAllMovies().size();
     }
 

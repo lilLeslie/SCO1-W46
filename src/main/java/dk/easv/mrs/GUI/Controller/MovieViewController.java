@@ -31,7 +31,6 @@ public class MovieViewController implements Initializable {
     private Movie selected;
 
     public MovieViewController() {
-
         try {
             movieModel = new MovieModel();
         } catch (Exception e) {
