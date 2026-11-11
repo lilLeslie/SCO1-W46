@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,16 +23,13 @@ public class MovieDAO_File implements IMovieDataAccess {
     //@Override
     public List<Movie> getAllMovies() throws IOException {
         List<Movie> movies = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(MOVIES_FILE))) {
-            String line;
-            while ((line = br.readLine()) != null) {
+        try {
+            List<String> data = Files.readAllLines(Path.of(MOVIES_FILE));
+            for (String line : data) {
                 String[] parts = line.split(",");
-                if (parts.length == 3) {
-                    movies.add(new Movie(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), parts[2]));
-                }
+                movies.add(new Movie(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), parts[2]));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return movies;
@@ -40,17 +38,13 @@ public class MovieDAO_File implements IMovieDataAccess {
     @Override
     public Movie createMovie(String title, int year) throws Exception {
         Movie movie = new Movie(getAvailableId(), year, title);
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MOVIES_FILE, true))) {
-            bw.newLine();
-            bw.write(toCsv(movie));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Files.write(Path.of(MOVIES_FILE), toCsv(movie).getBytes(), StandardOpenOption.APPEND);
         return movie;
     }
 
     @Override
     public void updateMovie(Movie movie) throws Exception {
+
         Path sourcePath = Path.of(String.valueOf(MOVIES_FILE));
         Path tempPath = Files.createTempFile(sourcePath.getParent(), "_temp", ".txt");
 

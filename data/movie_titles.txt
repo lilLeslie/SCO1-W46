@@ -80,18 +80,6 @@
 107,2000,Magnolia: Bonus Material
 108,2004,Spartan
 109,1996,No Way Back
-110,1989,Scandal
-111,2003,Duplex (Widescreen)
-112,1993,The Eye of Vichy
-113,2000,Bruce Lee: A Warrior's Journey
-114,1989,Dominion Tank Police Part 1 & 2
-115,1973,Lord Peter Wimsey: Murder Must Advertise
-116,2004,Bear Cub
-117,1957,Silk Stockings
-118,1985,Rambo: First Blood Part II
-119,1999,Travel the World by Train: Africa
-120,2004,Plain Dirty
-121,2003,Beyonce: Live at Wembley
 122,2002,Cube 2: Hypercube
 123,2000,Chain of Fools
 124,2000,Cold Blooded
@@ -17741,4 +17729,4 @@
 17767,2010,Far til fire - på japansk
 17768,2026,Obsession
 17768,2010,Far til fire - på japansk
-17743,2323,d
+17743,2323,d17732,2010,Test
