@@ -12,6 +12,11 @@ public class Movie {
         this.year = year;
     }
 
+    public Movie (int year, String title){
+        this.title = title;
+        this.year = year;
+    }
+
     public int getId() {
         return id;
     }
@@ -35,6 +40,6 @@ public class Movie {
     @Override
     public String toString()
     {
-        return id + ": " + title + " ("+year+")";
+        return title + " ("+year+")";
     }
 }

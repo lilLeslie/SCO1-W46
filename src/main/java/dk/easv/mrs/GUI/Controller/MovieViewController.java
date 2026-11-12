@@ -4,6 +4,8 @@ package dk.easv.mrs.GUI.Controller;
 
 import dk.easv.mrs.GUI.View.MovieListCell;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -19,6 +21,7 @@ import java.util.ResourceBundle;
 // Project imports
 import dk.easv.mrs.BE.Movie;
 import dk.easv.mrs.GUI.Model.MovieModel;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -31,7 +34,6 @@ public class MovieViewController implements Initializable {
     private Movie selected;
 
     public MovieViewController() {
-
         try {
             movieModel = new MovieModel();
         } catch (Exception e) {
@@ -53,12 +55,17 @@ public class MovieViewController implements Initializable {
                 e.printStackTrace();
             }
         });
-        lstMovies.setOnMouseClicked(event -> {
-            try {
-                selected = lstMovies.getSelectionModel().getSelectedItem();
-            } catch (Exception e){
-                displayError(e);
-                e.printStackTrace();
+        lstMovies.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() == 2){
+                    selected = lstMovies.getSelectionModel().getSelectedItem();
+                    try {
+                        openMovieDialog();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         });
 
@@ -71,26 +78,28 @@ public class MovieViewController implements Initializable {
         alert.showAndWait();
     }
 
-    public void onAddMovieClicked(ActionEvent actionEvent) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MovieDialogView.fxml"));
-            Parent root = loader.load();
-            MovieDialogController controller = loader.getController();
-            controller.setMovieModel(movieModel);
-            controller.setMovie(selected);
-            Stage stage = new Stage();
-            stage.setTitle("Add Movie");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void onAddMovieClicked(ActionEvent actionEvent) throws IOException {
+        openMovieDialog();
+    }
+
+    private void openMovieDialog() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MovieDialogView.fxml"));
+        Parent root = loader.load();
+        MovieDialogController controller = loader.getController();
+        controller.setMovieModel(movieModel);
+        controller.setMovie(selected != null ? selected : null);
+        Stage stage = new Stage();
+        stage.setTitle("Movie Dialog");
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setOnCloseRequest(event -> selected = null);
+        stage.show();
     }
 
     public void onDeleteClicked(ActionEvent actionEvent) throws Exception {
         if (lstMovies.getSelectionModel().getSelectedItem() != null){
-            movieModel.deleteMovie(lstMovies.getSelectionModel().getSelectedItem());
+            Movie movie = lstMovies.getSelectionModel().getSelectedItem();
+            movieModel.deleteMovie(movie);
         }
     }
 }

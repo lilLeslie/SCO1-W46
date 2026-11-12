@@ -1,6 +1,7 @@
 package dk.easv.mrs.BLL;
 
 // Java imports
+import java.io.IOException;
 import java.util.List;
 
 // Project imports
@@ -14,7 +15,7 @@ public class MovieManager {
     private MovieSearcher movieSearcher = new MovieSearcher();
     private IMovieDataAccess movieDAO;
 
-    public MovieManager() {
+    public MovieManager() throws IOException {
         movieDAO = new MovieDAO_File();
     }
 
@@ -28,7 +29,7 @@ public class MovieManager {
     }
 
     public Movie createMovie(String title, int year) throws Exception {
-        return movieDAO.createMovie(title, year);
+        return movieDAO.createMovie(new Movie(year, title));
     }
 
     public void updateMovie(Movie movie) throws Exception {
