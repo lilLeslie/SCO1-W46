@@ -5,7 +5,6 @@ package dk.easv.mrs.GUI.Controller;
 import dk.easv.mrs.GUI.View.MovieListCell;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;

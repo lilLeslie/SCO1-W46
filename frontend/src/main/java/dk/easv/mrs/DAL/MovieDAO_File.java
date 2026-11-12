@@ -3,17 +3,11 @@ package dk.easv.mrs.DAL;
 // Java imports
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 // Project imports
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.mrs.BE.Movie;
 
 public class MovieDAO_File implements IMovieDataAccess {
