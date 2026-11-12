@@ -29,7 +29,7 @@ public class MovieManager {
     }
 
     public Movie createMovie(String title, int year) throws Exception {
-        return movieDAO.createMovie(title, year);
+        return movieDAO.createMovie(new Movie(year, title));
     }
 
     public void updateMovie(Movie movie) throws Exception {

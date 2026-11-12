@@ -8,10 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +36,7 @@ public class MovieDAO_File implements IMovieDataAccess {
             String sql = "SELECT * FROM dbo.Movie";
             ResultSet rs = stmt.executeQuery(sql);
 
-            while (rs.next()){
+            while (rs.next()) {
                 int id = rs.getInt(1);
                 String title = rs.getString(2);
                 int year = rs.getInt(3);
@@ -47,16 +44,34 @@ public class MovieDAO_File implements IMovieDataAccess {
             }
             return movies;
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             throw new Exception("Could not get movies: ", e);
         }
     }
 
     @Override
-    public Movie createMovie(String title, int year) throws Exception {
-        Movie movie = new Movie(getAvailableId(), year, title);
-        Files.write(Path.of(MOVIES_FILE), toCsv(movie).getBytes(), StandardOpenOption.APPEND);
+    public Movie createMovie(Movie movie) throws Exception {
+        String sql = "INSERT INTO dbo.Movie(Title, Year) VALUES (?, ?)";
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, movie.getTitle());
+            ps.setInt(2, movie.getYear());
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    int generatedId = rs.getInt(1);
+                    return new Movie(
+                            generatedId,
+                            movie.getYear(),
+                            movie.getTitle()
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            throw new Exception("Could not add movie to db: ", e);
+        }
         return movie;
     }
 
