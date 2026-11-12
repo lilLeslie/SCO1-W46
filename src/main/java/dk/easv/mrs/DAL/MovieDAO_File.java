@@ -77,31 +77,15 @@ public class MovieDAO_File implements IMovieDataAccess {
 
     @Override
     public void updateMovie(Movie movie) throws Exception {
-
-        Path sourcePath = Path.of(String.valueOf(MOVIES_FILE));
-        Path tempPath = Files.createTempFile(sourcePath.getParent(), "_temp", ".txt");
-
-        try (BufferedReader br = Files.newBufferedReader(sourcePath, StandardCharsets.UTF_8);
-             BufferedWriter bw = Files.newBufferedWriter(tempPath, StandardCharsets.UTF_8)) {
-
-            String line;
-            boolean firstLine = true;
-
-            while ((line = br.readLine()) != null) {
-                if (!firstLine) {
-                    bw.newLine();
-                }
-
-                int id = Integer.parseInt(line.split(",")[0]);
-                if (id == movie.getId()) {
-                    bw.write(toCsv(movie));
-                } else {
-                    bw.write(line);
-                }
-                firstLine = false;
-            }
-
-            Files.move(tempPath, sourcePath, StandardCopyOption.REPLACE_EXISTING);
+        String sql = "UPDATE dbo.Movie SET Title = ?, Year = ? WHERE Id = ?";
+        try (Connection connection = dbConnection.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql)){
+            ps.setString(1, movie.getTitle());
+            ps.setInt(2, movie.getYear());
+            ps.setInt(3, movie.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new Exception("Could not update movie: ", e);
         }
     }
 
