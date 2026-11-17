@@ -30,7 +30,28 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not create user: " + e);
+        }
+        return null;
+    }
+
+    public User getUserByUsername(String username) throws SQLException {
+        String sql = "SELECT * FROM dbo.Users WHERE UserName = ?";
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);) {
+            ps.setString(1, username);
+            ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                            rs.getInt(1),
+                            username,
+                            rs.getString(3)
+                    );
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException("Could not get user: " + e);
+            }
         }
         return null;
     }

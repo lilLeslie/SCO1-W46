@@ -33,7 +33,7 @@ public class MovieDAO_File implements IMovieDataAccess {
         try (Connection connection = dbConnection.getConnection();
              Statement stmt = connection.createStatement()) {
 
-            String sql = "SELECT * FROM dbo.Movie";
+            String sql = "SELECT * FROM dbo.Movies";
             ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
@@ -52,7 +52,7 @@ public class MovieDAO_File implements IMovieDataAccess {
 
     @Override
     public Movie createMovie(Movie movie) throws Exception {
-        String sql = "INSERT INTO dbo.Movie(Title, Year) VALUES (?, ?)";
+        String sql = "INSERT INTO dbo.Movies(Title, Year) VALUES (?, ?)";
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, movie.getTitle());
@@ -77,7 +77,7 @@ public class MovieDAO_File implements IMovieDataAccess {
 
     @Override
     public void updateMovie(Movie movie) throws Exception {
-        String sql = "UPDATE dbo.Movie SET Title = ?, Year = ? WHERE Id = ?";
+        String sql = "UPDATE dbo.Movies SET Title = ?, Year = ? WHERE Id = ?";
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, movie.getTitle());
@@ -91,7 +91,7 @@ public class MovieDAO_File implements IMovieDataAccess {
 
     @Override
     public void deleteMovie(Movie movie) throws Exception {
-        String sql = "DELETE FROM dbo.Movie WHERE Id = ?";
+        String sql = "DELETE FROM dbo.Movies WHERE Id = ?";
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, movie.getId());

@@ -15,4 +15,8 @@ public class UserModel {
     public User createUser(String username, String password){
         return userManager.createUser(username, password);
     }
+
+    public User login(String username, String password){
+        return userManager.getUser(username, password);
+    }
 }

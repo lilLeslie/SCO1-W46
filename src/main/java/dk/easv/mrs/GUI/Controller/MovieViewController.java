@@ -2,6 +2,7 @@ package dk.easv.mrs.GUI.Controller;
 
 // Java imports
 
+import dk.easv.mrs.BE.User;
 import dk.easv.mrs.GUI.View.MovieListCell;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -32,6 +33,7 @@ public class MovieViewController implements Initializable {
     public ListView<Movie> lstMovies;
     private MovieModel movieModel;
     private Movie selected;
+    private User user;
 
     public MovieViewController() {
         try {
@@ -41,7 +43,6 @@ public class MovieViewController implements Initializable {
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -58,7 +59,7 @@ public class MovieViewController implements Initializable {
         lstMovies.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (event.getClickCount() == 2){
+                if (event.getClickCount() == 2) {
                     selected = lstMovies.getSelectionModel().getSelectedItem();
                     try {
                         openMovieDialog();
@@ -68,7 +69,10 @@ public class MovieViewController implements Initializable {
                 }
             }
         });
+    }
 
+    public void setUser(User user){
+        this.user = user;
     }
 
     private void displayError(Throwable t) {
@@ -97,7 +101,7 @@ public class MovieViewController implements Initializable {
     }
 
     public void onDeleteClicked(ActionEvent actionEvent) throws Exception {
-        if (lstMovies.getSelectionModel().getSelectedItem() != null){
+        if (lstMovies.getSelectionModel().getSelectedItem() != null) {
             Movie movie = lstMovies.getSelectionModel().getSelectedItem();
             movieModel.deleteMovie(movie);
         }

@@ -5,6 +5,7 @@ import dk.easv.mrs.DAL.UserDAO;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class UserManager {
     private UserDAO userDAO;
@@ -13,8 +14,22 @@ public class UserManager {
         userDAO = new UserDAO();
     }
 
-    public User createUser(String username, String rawPassword){
+    public User createUser(String username, String rawPassword) {
         String hashedPassword = BCrypt.hashpw(rawPassword, BCrypt.gensalt(5));
         return userDAO.createUser(new User(username, hashedPassword));
+    }
+
+    public User getUser(String username, String rawPassword) {
+        try {
+            User user = userDAO.getUserByUsername(username);
+            if (BCrypt.checkpw(rawPassword, user.getPassword())) {
+                return user;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
