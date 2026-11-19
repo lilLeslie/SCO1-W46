@@ -15,15 +15,24 @@ import java.io.IOException;
 
 public class AuthController {
 
-    @FXML private Label lblTitle;
-    @FXML private TextField txtUsername;
-    @FXML private PasswordField txtPassword;
-    @FXML private VBox vbConfirmPassword;
-    @FXML private PasswordField txtConfirmPassword;
-    @FXML private Label lblError;
-    @FXML private Button btnSubmit;
-    @FXML private Label lblSwitchPrompt;
-    @FXML private Hyperlink linkSwitchMode;
+    @FXML
+    private Label lblTitle;
+    @FXML
+    private TextField txtUsername;
+    @FXML
+    private PasswordField txtPassword;
+    @FXML
+    private VBox vbConfirmPassword;
+    @FXML
+    private PasswordField txtConfirmPassword;
+    @FXML
+    private Label lblError;
+    @FXML
+    private Button btnSubmit;
+    @FXML
+    private Label lblSwitchPrompt;
+    @FXML
+    private Hyperlink linkSwitchMode;
 
     private UserModel userModel;
     private boolean isSignUpMode = false;
@@ -90,14 +99,15 @@ public class AuthController {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             showError("Error: " + e.getMessage());
         }
     }
 
     private void openMainView(User user) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MovieView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/UserDashboardView.fxml"));
         Parent root = loader.load();
-        MovieViewController controller = loader.getController();
+        UserDashboardController controller = loader.getController();
         controller.setUser(user);
         Stage stage = new Stage();
         stage.setTitle(user.getUsername());

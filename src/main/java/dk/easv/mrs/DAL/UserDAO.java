@@ -12,7 +12,7 @@ public class UserDAO {
     }
 
     public User createUser(User user) {
-        String sql = "INSERT INTO dbo.Users(UserName, Password) VALUES(?,?)";
+        String sql = "INSERT INTO dbo.Users(Username, Password) VALUES(?,?)";
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, user.getUsername());
@@ -36,7 +36,7 @@ public class UserDAO {
     }
 
     public User getUserByUsername(String username) throws SQLException {
-        String sql = "SELECT * FROM dbo.Users WHERE UserName = ?";
+        String sql = "SELECT * FROM dbo.Users WHERE Username = ?";
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setString(1, username);
