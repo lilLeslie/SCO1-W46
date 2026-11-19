@@ -43,4 +43,5 @@ public class UserDashboardController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+public class UserDashboardController {
 }
