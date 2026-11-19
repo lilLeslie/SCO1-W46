@@ -11,9 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +20,7 @@ import java.util.ResourceBundle;
 // Project imports
 import dk.easv.mrs.BE.Movie;
 import dk.easv.mrs.GUI.Model.MovieModel;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -30,7 +29,7 @@ public class MovieViewController implements Initializable {
 
 
     public TextField txtMovieSearch;
-    public ListView<Movie> lstMovies;
+    public TableView<Movie> tblMovies;
     private MovieModel movieModel;
     private Movie selected;
     private User user;
@@ -46,21 +45,12 @@ public class MovieViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        lstMovies.setItems(movieModel.getObservableMovies());
-        lstMovies.setCellFactory(lv -> new MovieListCell());
-        txtMovieSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
-            try {
-                movieModel.searchMovie(newValue);
-            } catch (Exception e) {
-                displayError(e);
-                e.printStackTrace();
-            }
-        });
-        lstMovies.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        loadTableView();
+        tblMovies.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getClickCount() == 2) {
-                    selected = lstMovies.getSelectionModel().getSelectedItem();
+                    selected = tblMovies.getSelectionModel().getSelectedItem();
                     try {
                         openMovieDialog();
                     } catch (IOException e) {
@@ -100,9 +90,22 @@ public class MovieViewController implements Initializable {
         stage.show();
     }
 
+    private void loadTableView(){
+        TableColumn titleCol = new TableColumn("Title");
+        TableColumn yearCol = new TableColumn("year");
+        titleCol.setCellValueFactory(
+                new PropertyValueFactory<Movie, String>("title")
+        );
+        yearCol.setCellValueFactory(
+                new PropertyValueFactory<Movie, Integer>("year")
+        );
+        tblMovies.getColumns().addAll(titleCol, yearCol);
+        tblMovies.setItems(movieModel.getObservableMovies());
+    }
+
     public void onDeleteClicked(ActionEvent actionEvent) throws Exception {
-        if (lstMovies.getSelectionModel().getSelectedItem() != null) {
-            Movie movie = lstMovies.getSelectionModel().getSelectedItem();
+        if (tblMovies.getSelectionModel().getSelectedItem() != null) {
+            Movie movie = tblMovies.getSelectionModel().getSelectedItem();
             movieModel.deleteMovie(movie);
         }
     }

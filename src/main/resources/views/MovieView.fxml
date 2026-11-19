@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.TableView?>
 <VBox prefHeight="393.0" prefWidth="567.0" spacing="16.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mrs.GUI.Controller.MovieViewController">
    <children>
       <HBox alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="567.0" spacing="12.0">
@@ -18,7 +19,7 @@
             <Insets />
          </VBox.margin>
       </HBox>
-      <ListView fx:id="lstMovies" prefHeight="278.0" prefWidth="567.0" />
+      <TableView fx:id="tblMovies" prefHeight="278.0" prefWidth="567.0" />
       <HBox alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="535.0">
          <children>
             <Button mnemonicParsing="false" onAction="#onDeleteClicked" text="Delete" />
